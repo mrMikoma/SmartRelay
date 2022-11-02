@@ -15,13 +15,19 @@ def getNordPoolPrices():
     # Print the hourly dictionary
     #pprint(hourly)
 
-    print(f'\n######################\n') # devider
+    print(f'######################\n') # devider
+    print(f'Daily details: ')
 
     # Print all keys and values
     for key, val in hourly.items():
-        print(key, val)
+        if key == "areas":
+            continue
 
-    print(f'\n######################\n') # devider
+        else:
+            print(key, val)
+
+    print(f'######################\n') # devider
+    print(f'Daily statistics: ')
 
     # Get area specific values
     areas = hourly.__getitem__('areas')
@@ -30,11 +36,16 @@ def getNordPoolPrices():
 
     # Print statistic prices
     for key, val in statistic_prices.items():
-        print(key, val)
+        if key == "values":
+            continue
 
-    print("", end='\n')
+        else:
+            print(key, val)
 
-    print(f'\n######################\n')  # devider
+    print("", end='')
+
+    print(f'######################\n')  # devider
+    print(f'Hourly prices: ')
 
     for price in hourly_prices:
         print(f'{price["value"]}; ', end='')

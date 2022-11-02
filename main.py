@@ -1,7 +1,7 @@
 # This is a simple Python script for controlling high current relay with
 # Nordpool electricity price data.
 
-# UNDER ACTIVE DEVELOPMENT
+# status: UNDER ACTIVE DEVELOPMENT
 
 # Author @mrMikoma
 
@@ -14,8 +14,9 @@ Improvement ideas:
 - DO ALL :)
 -
 """
-import nordPoolAPI
 
+import NordPoolData
+import FMIData
 
 # APPLICATION
 
@@ -27,7 +28,9 @@ if __name__ == '__main__':
           + f'with Nordpool electricity price data\n')
 
     # Running program
-    nordPoolAPI.getNordPoolPrices()
+    NordPoolData.getNordPoolPrices() # get electricity price data
+    temperatures = FMIData.getFMItemperatures()
+    FMIData.printTemperatures(temperatures)
 
     # Ending program
     print(f'\nThank you for using this program! :)')
