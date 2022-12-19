@@ -1,7 +1,5 @@
 
-from nordpool import elspot, elbas
-from pprint import pprint
-import json
+from nordpool import elspot
 import DateTime
 
 

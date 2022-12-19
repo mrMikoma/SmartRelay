@@ -15,22 +15,22 @@ Improvement ideas:
 -
 """
 
-import NordPoolData
 import FMIData
+import NordPoolData
 
 
 # MAIN
 if __name__ == '__main__':
-    # Starting program
+    # Starting data
     print(f'\nHi, this is a really simple application for controlling high current relay '
           + f'with Nordpool electricity price data\n')
 
-    # Running program
+    # Running data
     NordPoolData.getNordPoolPrices() # get electricity price data
     temperatures = FMIData.getFMItemperatures()
     FMIData.printTemperatures(temperatures)
 
-    # Ending program
+    # Ending data
     print(f'\nThank you for using this program! :)')
 
 # eof
