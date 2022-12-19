@@ -18,8 +18,6 @@ Improvement ideas:
 import NordPoolData
 import FMIData
 
-# APPLICATION
-
 
 # MAIN
 if __name__ == '__main__':
