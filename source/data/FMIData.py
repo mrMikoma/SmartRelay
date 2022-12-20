@@ -1,14 +1,19 @@
 
 from pprint import pprint
+import os
+from dotenv import load_dotenv
 import urllib3
 import xmltodict
 import traceback
 
+
 # Parikkala coordinates: 61.55,29.50
 
 def getFMItemperatures():
-    city = "parikkala"      # place
-    cords = "61.55,29.50"   # latlon
+    # Declaring variables
+    load_dotenv()
+    city = os.getenv("CITY")            # place
+    cords = os.getenv("COORDINATES")    # latlon
     url = "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place="+city+"&latlon="+cords+"&"
     http = urllib3.PoolManager()
 
