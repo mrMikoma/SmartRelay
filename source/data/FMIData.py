@@ -1,39 +1,39 @@
 
-from pprint import pprint
 import os
 from dotenv import load_dotenv
-import urllib3
-import xmltodict
-import traceback
+import DateTime
+from fmiopendata.wfs import download_stored_query
 
 
-# Parikkala coordinates: 61.55,29.50
+def getFMIforecast():
+    print(f"Retrieving weather forecast data from FMI...")
 
-def getFMItemperatures():
     # Declaring variables
+    forecast_data = {}
     load_dotenv()
-    city = os.getenv("CITY")            # place
-    cords = os.getenv("COORDINATES")    # latlon
-    url = "https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature&storedquery_id=ecmwf::forecast::surface::point::timevaluepair&place="+city+"&latlon="+cords+"&"
-    http = urllib3.PoolManager()
+    model_data = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
+                                       args=["starttime=" + DateTime.getCurrentDayDate(),
+                                             "endtime=" + DateTime.getNextDayDate(),
+                                             "timestep=60",
+                                             "place=" + os.getenv("CITY"),
+                                             "latlon=" + os.getenv("COORDINATES")])
+
+    # Get times and  all air temperatures and wind speeds
+    for item in model_data.data:
+        forecast_data[item] = {
+                               'Temperature': model_data.data[item]['Parikkala']['Air temperature']['value'],
+                               'Wind speed': model_data.data[item]['Parikkala']['Wind speed']['value']
+                              }
+
+    print(f"Data retrieval completed.")
+    return forecast_data
 
 
-    response = http.request('GET', url)
-    try:
-        data = xmltodict.parse(response.data)
-        data_parsed = data['wfs:FeatureCollection']['wfs:member'][1]['omso:PointTimeSeriesObservation']['om:result']['wml2:MeasurementTimeseries']['wml2:point'][:]
-    except:
-        print("Failed to parse xml from response (%s)" % traceback.format_exc())
-    return data_parsed
-
-def printTemperatures(temps):
-    #pprint(temps) # debug
-    print(f'######################\n')  # devider
-    print(f'Temperatures: ')
-
-    # Print all times and values
-    for i in range(24): # len(temps)
-        value = temps[i]['wml2:MeasurementTVP']['wml2:value']
-        print(f'{value}; ', end='')
+def printData(forecast_data):
+    for i in forecast_data:
+        print("Key : {} , Value : {}".format(i, forecast_data[i]))
 
     print("", end='\n')
+    return
+
+# eof
