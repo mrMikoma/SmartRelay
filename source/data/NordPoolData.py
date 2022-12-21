@@ -1,9 +1,12 @@
 
+from random import gauss
 from nordpool import elspot
+import math
 import DateTime
 
 
-def getNordPoolPrices():
+def getNordPoolPrices(data):
+    print(f"\nRetrieving electricity price data from Nordpool...")
     # Initialize class for fetching Elspot prices
     prices_spot = elspot.Prices()
 
@@ -45,14 +48,37 @@ def getNordPoolPrices():
     print(f'######################\n')  # devider
     print(f'Hourly prices: ')
 
+
     for price in hourly_prices:
-        print(f'{price["value"]}; ', end='')
+        print(f'Time: {DateTime.transformDate(price["start"])} price: {price["value"]} ', end='')
+        # Handle data from Nordpool
+        if price["value"] != float('inf'):
+            data[DateTime.transformDate(price["start"])] = {'Price': price["value"]}
 
-    print("", end='\n')
+        # Create random data if real data not available
+        else:
+            my_mean = 150
+            my_variance = 250
+            random_number = gauss(my_mean, math.sqrt(my_variance))
+            data[DateTime.transformDate(price["start"])] = {'Price': 150.2} # float("{:.2f}".format(random_number))
 
 
-def getDate():
-    print(DateTime.getCurrentDayDate())
-    print(DateTime.getNextDayDate())
+    print(f"Data retrieval completed.\n")
+    return data
+
+def createDummyData(data):
+    # Declaring variables
+    date = DateTime.getCurrentDayDate()
+    date = DateTime.getHoursFrom(date, 0)
+    my_mean = 150
+    my_variance = 250
+
+    # Creating random variables
+    for i in range(24):
+        random_number = gauss(my_mean, math.sqrt(my_variance))
+        data[DateTime.getHoursFrom(date, i)] = {'Price': float("{:.2f}".format(random_number))}
+
+    return data
+
 
 # eof

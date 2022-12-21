@@ -5,33 +5,34 @@ import DateTime
 from fmiopendata.wfs import download_stored_query
 
 
-def getFMIforecast():
-    print(f"Retrieving weather forecast data from FMI...")
+def getFMIforecast(data):
+    print(f"\nRetrieving weather forecast data from FMI...")
 
     # Declaring variables
-    forecast_data = {}
     load_dotenv()
+    print(min(data.keys()))             # debug
     model_data = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
-                                       args=["starttime=" + DateTime.getCurrentDayDate(),
-                                             "endtime=" + DateTime.getNextDayDate(),
+                                       args=["starttime=" + min(data.keys()),
+                                             "endtime=" + max(data.keys()),
                                              "timestep=60",
                                              "place=" + os.getenv("CITY"),
                                              "latlon=" + os.getenv("COORDINATES")])
 
     # Get times and  all air temperatures and wind speeds
     for item in model_data.data:
-        forecast_data[item] = {
-                               'Temperature': model_data.data[item]['Parikkala']['Air temperature']['value'],
-                               'Wind speed': model_data.data[item]['Parikkala']['Wind speed']['value']
-                              }
+        if DateTime.dateDateString(item) in data:
+            data[DateTime.dateDateString(item)].update({
+                                   'Temperature': model_data.data[item]['Parikkala']['Air temperature']['value'],
+                                   'Wind speed': model_data.data[item]['Parikkala']['Wind speed']['value'],
+                                  })
 
     print(f"Data retrieval completed.")
-    return forecast_data
+    return data
 
 
-def printData(forecast_data):
-    for i in forecast_data:
-        print("Key : {} , Value : {}".format(i, forecast_data[i]))
+def printData(data):
+    for i in data:
+        print("Key : {} , Value : {}".format(i, data[i]))
 
     print("", end='\n')
     return

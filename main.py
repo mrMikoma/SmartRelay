@@ -19,6 +19,7 @@ Improvement ideas:
 
 import FMIData
 import NordPoolData
+import HandleData
 import WindyData
 
 
@@ -29,10 +30,17 @@ if __name__ == '__main__':
           + f'with Nordpool electricity price data.\n')
 
     # Retrieving data (WORKING)
-    #NordPoolData.getNordPoolPrices() # get electricity price data
-    data = FMIData.getFMIforecast()
+    data = {}
+
+    #data = NordPoolData.getNordPoolPrices(data)    # get electricity price data
+    data = NordPoolData.createDummyData(data)
     FMIData.printData(data)
 
+    data = FMIData.getFMIforecast(data)            # get FMI weather forecast data
+    FMIData.printData(data)
+
+    # Handle data
+    #HandleData.plotData(data)
 
     # Ending data
     print(f'\nThank you for using this program! :)')
