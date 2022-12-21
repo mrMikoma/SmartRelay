@@ -50,23 +50,25 @@ def getNordPoolPrices(data):
 
 
     for price in hourly_prices:
-        print(f'Time: {DateTime.transformDate(price["start"])} price: {price["value"]} ', end='')
+        print(f'Time: {DateTime.dateDateString(price["start"])} price: {price["value"]} ', end='')
         # Handle data from Nordpool
         if price["value"] != float('inf'):
-            data[DateTime.transformDate(price["start"])] = {'Price': price["value"]}
+            data[DateTime.dateDateString(price["start"])] = {'Price': price["value"]}
 
         # Create random data if real data not available
         else:
+            print("Created dummy data!")
             my_mean = 150
             my_variance = 250
             random_number = gauss(my_mean, math.sqrt(my_variance))
-            data[DateTime.transformDate(price["start"])] = {'Price': 150.2} # float("{:.2f}".format(random_number))
+            data[DateTime.dateDateString(price["start"])] = {'Price': float("{:.2f}".format(random_number))}
 
 
     print(f"Data retrieval completed.\n")
     return data
 
 def createDummyData(data):
+    print(f'Creating dummy data for Nordpool prices...')
     # Declaring variables
     date = DateTime.getCurrentDayDate()
     date = DateTime.getHoursFrom(date, 0)
@@ -78,6 +80,7 @@ def createDummyData(data):
         random_number = gauss(my_mean, math.sqrt(my_variance))
         data[DateTime.getHoursFrom(date, i)] = {'Price': float("{:.2f}".format(random_number))}
 
+    print(f"Data creating completed.")
     return data
 
 
