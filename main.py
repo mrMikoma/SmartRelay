@@ -1,15 +1,14 @@
 # This is a simple Python script for controlling high current relay with
 # Nordpool electricity price data.
+# Author: @mrMikoma
 
 # status: UNDER ACTIVE DEVELOPMENT
-
-# Author @mrMikoma
 
 # Thanks to
 # - https://github.com/kipe/nordpool
 # - https://github.com/pnuu/fmiopendata
 # - https://github.com/Jan200101/ShellyPy
-
+# -
 
 """
 Improvement ideas:
@@ -17,7 +16,9 @@ Improvement ideas:
 -
 """
 
+import DummyData
 import FMIData
+import HandleData
 import NordPoolData
 import PlotData
 import WindyData
@@ -25,25 +26,37 @@ import WindyData
 
 # MAIN
 if __name__ == '__main__':
-    # Starting data
-    print(f'\nHi, this is a really simple application for controlling high current relay '
-          + f'with Nordpool electricity price data.\n')
+    # Starting program
+    print(f'\nHi, this is a really simple application for controlling Shelly relay '
+          + f'with Nordpool electricity prices and FMI weather data.\n')
 
-    # Retrieving data (WORKING)
+    # Declaring variables
     data = {}
 
-    data = NordPoolData.getNordPoolPrices(data)    # get electricity price data
-    #data = NordPoolData.createDummyData(data)     # for creating dummy data for testing purposes
-    FMIData.printData(data)
+    # RETRIEVING DATA FROM APIs:
+    # Electricity prices from NordPool
+    #data = NordPoolData.getNordPoolPrices(data)    # get electricity price data
+    data = DummyData.createDummyPriceData(data)     # for creating dummy data for testing purposes
+    HandleData.printData(data)
 
-    data = FMIData.getFMIforecast(data)            # get FMI weather forecast data
-    FMIData.printData(data)
+    # Temperatures and wind speeds from FMI
+    #data = FMIData.getFMIforecast(data)            # get FMI weather forecast data
+    data = DummyData.createDummyWeatherData(data)   # for creating dummy data for testing purposes
+    HandleData.printData(data)
 
-    # Handle data
-    PlotData.plotPrice(data)
-    PlotData.plotWeather(data)
+    # HANDLING DATA
+    offTime = HandleData.offTime(data)
+    offHours = HandleData.decideOffHours(data, offTime)
 
-    # Ending data
+    # Plotting data for data visualization
+    #PlotData.plotPrice(data)
+    PlotData.plotWeather(data, offTime)
+
+    # Controlling relay (to be added)
+
+
+
+    # Ending program
     print(f'\nThank you for using this program! :)')
 
 # eof

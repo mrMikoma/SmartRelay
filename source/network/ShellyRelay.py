@@ -8,10 +8,6 @@ load_dotenv()
 shelly_ip = os.getenv("SHELLY_IP")
 
 
-print(shelly_ip)
-
-
-
 # try connecting to the Shelly device under that ip
 device = ShellyPy.Shelly(shelly_ip)
 # WILL throw an exception if the device is not reachable, gives a bad response or requires a login

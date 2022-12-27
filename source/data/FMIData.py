@@ -10,7 +10,7 @@ def getFMIforecast(data):
 
     # Declaring variables
     load_dotenv()
-    print(min(data.keys()))             # debug
+    print(min(data.keys()))       # debug
     model_data = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
                                        args=["starttime=" + min(data.keys()),
                                              "endtime=" + max(data.keys()),
@@ -28,13 +28,5 @@ def getFMIforecast(data):
 
     print(f"Data retrieval completed.")
     return data
-
-
-def printData(data):
-    for i in data:
-        print("Key : {} , Value : {}".format(i, data[i]))
-
-    print("", end='\n')
-    return
 
 # eof
