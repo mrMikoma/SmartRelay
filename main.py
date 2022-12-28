@@ -17,12 +17,8 @@ Improvement ideas:
 """
 
 import DummyData
-import FMIData
-import HandleData
-import NordPoolData
 import PlotData
-import WindyData
-
+from data_handling import OffTimeData, HandleData
 
 # MAIN
 if __name__ == '__main__':
@@ -45,12 +41,15 @@ if __name__ == '__main__':
     HandleData.printData(data)
 
     # HANDLING DATA
-    offTime = HandleData.offTime(data)
-    offHours = HandleData.decideOffHours(data, offTime)
+    offTime = OffTimeData.offTime(data)
+    offHours = OffTimeData.decideOffHours(data, offTime)
 
     # Plotting data for data visualization
-    #PlotData.plotPrice(data)
+    PlotData.plotPrice(data)
     PlotData.plotWeather(data, offTime)
+
+
+
 
     # Controlling relay (to be added)
 

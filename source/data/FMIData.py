@@ -18,7 +18,7 @@ def getFMIforecast(data):
                                              "place=" + os.getenv("CITY"),
                                              "latlon=" + os.getenv("COORDINATES")])
 
-    # Get times and  all air temperatures and wind speeds
+    # Set times and  all air temperatures and wind speeds
     for item in model_data.data:
         if DateTime.dateDateString(item) in data:
             data[DateTime.dateDateString(item)].update({

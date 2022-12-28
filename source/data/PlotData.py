@@ -1,8 +1,7 @@
 
 import matplotlib.pyplot as plt
-import numpy as np
-import DateTime
-import HandleData
+
+from data_handling import WindChillData, OffTimeData, HandleData
 
 
 def plotPrice(raw_data):
@@ -25,13 +24,13 @@ def plotWeather(raw_data, offTime):
        times = HandleData.getTimesInList(raw_data)
        temperatures = HandleData.getValuesInList(raw_data, 'Temperature')
        windSpeeds = HandleData.getValuesInList(raw_data, 'Wind speed')
-       windChills = HandleData.windChillValues(temperatures, windSpeeds)
+       windChills = WindChillData.windChillValues(temperatures, windSpeeds)
 
 
        # plot
        plt.plot(times, temperatures, label="Temperatures (Celsius)")
        plt.plot(times, windSpeeds, label="Wind speeds (m/s)")
-       plt.plot(times, windChills, label="Wind chill (W/m²)")
+       plt.plot(times, windChills, label="Wind chill (W/m²) / 100")
 
 
        plt.ylabel('weather')
@@ -43,34 +42,57 @@ def plotWeather(raw_data, offTime):
 
 def plotHeatingPlan(raw_data):
        # Declare variables
-       temperatures = range(-25, 30, 5)
-       windSpeed = 0
+       temperatures = [i for i in range(-25,30,5)]
        offHours = []
 
        # Get data (windSpeed = 0)
-       for t in temperatures:
-              windChill = HandleData.calculateWindChill(t, windSpeed)
-              offHours.append(HandleData.calculateOffTime(windChill))
+       windSpeeds = 0
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
 
-       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeed}m/s')
+       # Get data (windSpeed = 1)
+       offHours.clear()
+       windSpeeds = 1
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
 
        # Get data (windSpeed = 2.5)
        offHours.clear()
-       windSpeed = 2.5
-       for t in temperatures:
-              windChill = HandleData.calculateWindChill(t, windSpeed)
-              offHours.append(HandleData.calculateOffTime(windChill))
-
-       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeed}m/s')
+       windSpeeds = 2.5
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
 
        # Get data (windSpeed = 5)
        offHours.clear()
-       windSpeed = 5
-       for t in temperatures:
-              windChill = HandleData.calculateWindChill(t, windSpeed)
-              offHours.append(HandleData.calculateOffTime(windChill))
+       windSpeeds = 5
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
 
-       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeed}m/s')
+       # Get data (windSpeed = 7.5)
+       offHours.clear()
+       windSpeeds = 7.5
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
+
+       # Get data (windSpeed = 10)
+       offHours.clear()
+       windSpeeds = 10
+       for i in temperatures:
+              offHours.append(OffTimeData.calculateOffTime([i], [windSpeeds]))
+       plt.plot(temperatures, offHours, label=f'Off (h), windSpeed={windSpeeds}m/s')
+
+       # Plot 0h line
+       offHours = [0 for _ in range(len(temperatures))]
+       plt.plot(temperatures, offHours, label=f'0h off line', color="red")
+
+       # Plot 21h line
+       offHours = [21 for _ in range(len(temperatures))]
+       plt.plot(temperatures, offHours, label=f'21h off line', color="green")
 
        # plot config
        plt.ylabel('Off Hours (h)')

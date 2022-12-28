@@ -1,6 +1,6 @@
+
 import math
 from random import gauss
-
 import DateTime
 
 
@@ -19,7 +19,6 @@ def createDummyPriceData(data):
 
     print(f"Data creating completed.")
     return data
-
 
 
 def createDummyWeatherData(data):
