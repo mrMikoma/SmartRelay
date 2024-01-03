@@ -18,11 +18,11 @@ Improvement ideas:
 
 import DummyData
 import PlotData
-from data_handling import OffTimeData, HandleData
+from data_handling import OffTimeData, HandleData, MinMaxOptimazation
 
 # MAIN
 if __name__ == '__main__':
-    # Starting program
+    # Program startup
     print(f'\nHi, this is a really simple application for controlling Shelly relay '
           + f'with Nordpool electricity prices and FMI weather data.\n')
 
@@ -41,18 +41,17 @@ if __name__ == '__main__':
     HandleData.printData(data)
 
     # HANDLING DATA
-    offTime = OffTimeData.offTime(data)
-    offHours = OffTimeData.decideOffHours(data, offTime)
+    # Optimize off-hours
+    offTime = MinMaxOptimazation.offTime()
+    #offTime = OffTimeData.offTime(data)
+    #offHours = OffTimeData.decideOffHours(data, offTime)
 
     # Plotting data for data visualization
-    PlotData.plotPrice(data)
-    PlotData.plotWeather(data, offTime)
-
-
+    #PlotData.plotPrice(data)
+    #PlotData.plotWeather(data, offTime)
 
 
     # Controlling relay (to be added)
-
 
 
     # Ending program

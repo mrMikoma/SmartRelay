@@ -1,4 +1,4 @@
-import heapq
+#import heapq
 from math import floor
 
 from data_handling.HandleData import *

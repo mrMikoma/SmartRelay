@@ -1,6 +1,5 @@
 
 import matplotlib.pyplot as plt
-
 from data_handling import WindChillData, OffTimeData, HandleData
 
 
