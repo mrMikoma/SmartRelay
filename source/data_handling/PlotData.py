@@ -1,6 +1,5 @@
-
 import matplotlib.pyplot as plt
-from data_handling import WindChillData, OffTimeData, HandleData
+from . import HandleData, WindChillData, OffTimeData
 
 
 def plotPrice(raw_data):
@@ -100,4 +99,5 @@ def plotHeatingPlan(raw_data):
        plt.legend()
        plt.show()
        return
+
 # eof

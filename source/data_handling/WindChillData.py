@@ -1,6 +1,4 @@
-
 import math
-
 
 """
 WIND CHILL LIMITING VARIABLES:
@@ -25,7 +23,7 @@ def windChillValues(tempList, windList):
     # Declaring variables
     windChillList = []
 
-    # calculating wind chill
+    # Calculating wind chill
     for i in range(len(tempList)):
         x = calculateWindChill(tempList[i], windList[i])
         windChillList.append(float("{:.3f}".format(x)))

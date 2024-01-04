@@ -21,6 +21,7 @@ import source.data_handling.HandleData as HandleData
 import source.data.NordPoolData as NordPoolData
 import source.data.FMIData as FMIData
 import source.data_handling.OffTimeData as OffTimeData
+import source.data_handling.PlotData as PlotData
 
 # MAIN
 if __name__ == '__main__':
@@ -38,20 +39,19 @@ if __name__ == '__main__':
     #HandleData.printData(data)
 
     # Temperatures and wind speeds from FMI
-    data = FMIData.getFMIforecast(data)            # get FMI weather forecast data
+    data = FMIData.getFMIforecast(data)             # get FMI weather forecast data
     #data = DummyData.createDummyWeatherData(data)   # for creating dummy data for testing purposes
     HandleData.printData(data)
 
     # HANDLING DATA
     # Optimize off-hours
-    #offTime = MinMaxOptimazation.offTime()     # WIP
+    #offTime = MinMaxOptimazation.offTime()         # WIP
     offTime = OffTimeData.offTime(data)
     #offHours = OffTimeData.decideOffHours(data, offTime)
 
     # Plotting data for data visualization
-    #PlotData.plotPrice(data)
-    #PlotData.plotWeather(data, offTime)
-
+    PlotData.plotPrice(data)
+    PlotData.plotWeather(data, offTime)
 
     # Controlling relay (to be added)
 

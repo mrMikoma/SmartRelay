@@ -1,7 +1,5 @@
-#import heapq
-
-from . import HandleData
-from . import WindChillData
+from . import HandleData, WindChillData
+from ..data import DateTime
 
 def calculateOffTime(temperatureList, windSpeedList):
     # Declaring variables
@@ -14,90 +12,30 @@ def calculateOffTime(temperatureList, windSpeedList):
     # Handling limits
     if offTime < 0:
         offTime = 0 
-    elif offTime > 21.5:
-        offTime = 21.5
-        
+    elif offTime > 21:
+        offTime = 21
+
     return round(offTime, 3)
 
 def offTime(data):
     print(f'\nCalculating possible off time.')
+
     # Declaring varibles
     tempList = HandleData.getValuesInList(data, 'Temperature')
     windList = HandleData.getValuesInList(data, 'Wind speed')
+    windChillList = WindChillData.windChillValues(tempList, windList)
+
+    # Printing values
     print(f'Temperatures: {tempList}')
     print(f'Wind speeds: {windList}')
-
-    windChillList = WindChillData.windChillValues(tempList, windList)
     print(f'Wind chills: {windChillList}')
 
+    # Calculating off time
     offTime = calculateOffTime(tempList, windList)
 
-
+    # Printing results
     print(f'Mean wind chill value: {round(sum(windChillList)/len(windChillList), 2)}')
     print(f'Possible off time is: {round(offTime, 2)}')
     return round(offTime, 0)
-
-def decideOffHours(data, offHoursDict, offTime):
-    # Declaring varibles
-    pricesList = []
-
-
-
-    # Deciding off hours
-    for key in data:
-        pricesList.append(data[key]['Price']) # data[key]['Price'])
-
-    print(pricesList)
-
-    temp = heapq.nlargest(3, data.item, key=lambda i: i[1])
-
-    ## ITERATE
-
-
-    # heapq.nlargest(3, fruitCount.items(), key=lambda i: i[1])
-
-
-    print(temp)
-
-
-    return offHoursDict
-def offHours(data, offTime):
-    # Declaring variables
-    offHoursDict = initializeOffHourStructure(data)
-
-    # Deciding off hours
-    offHoursDict = decideOffHours(data, offHoursDict, offTime)
-
-
-    # Setting data into data structure
-    data = settingCorrectData(data, offHoursDict)
-
-    print(f"Off hours decided!")
-    return data
-
-def initializeOffHourStructure(data):
-    # Declaring variables
-    i = 0
-    res = dict()
-    offHoursList = [False for _ in range(len(data))]
-
-    # Declaring testing dictionary with time and status values
-    for key in data:
-        res[DateTime.dateStringDate(key)] = offHoursList[i]
-        i += 1
-
-    # printing result
-    print("The constructed Dictionary : " + str(res))
-    return res
-
-def settingCorrectData(data, offHoursDict):
-    # Setting off hours into data structure
-    for key in offHoursDict:
-        if DateTime.dateDateString(key) in data:
-            data[DateTime.dateDateString(key)].update({
-                'RelayOn': offHoursDict[key]
-            })
-
-    return data
 
 # eof
