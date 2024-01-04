@@ -1,8 +1,7 @@
 #import heapq
-from math import floor
 
-from data_handling.HandleData import *
-from data_handling.WindChillData import *
+from . import HandleData
+from . import WindChillData
 
 def calculateOffTime(temperatureList, windSpeedList):
     # Declaring variables
@@ -11,17 +10,24 @@ def calculateOffTime(temperatureList, windSpeedList):
 
     # Calculatin offtime
     offTime = 0.45 * tempetatureMean - 0.65 * windSpeedMean + 11.3
+
+    # Handling limits
+    if offTime < 0:
+        offTime = 0 
+    elif offTime > 21.5:
+        offTime = 21.5
+        
     return round(offTime, 3)
 
 def offTime(data):
     print(f'\nCalculating possible off time.')
     # Declaring varibles
-    tempList = getValuesInList(data, 'Temperature')
-    windList = getValuesInList(data, 'Wind speed')
+    tempList = HandleData.getValuesInList(data, 'Temperature')
+    windList = HandleData.getValuesInList(data, 'Wind speed')
     print(f'Temperatures: {tempList}')
     print(f'Wind speeds: {windList}')
 
-    windChillList = windChillValues(tempList, windList)
+    windChillList = WindChillData.windChillValues(tempList, windList)
     print(f'Wind chills: {windChillList}')
 
     offTime = calculateOffTime(tempList, windList)

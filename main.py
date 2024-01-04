@@ -20,6 +20,7 @@ import source.data.DummyData as DummyData
 import source.data_handling.HandleData as HandleData
 import source.data.NordPoolData as NordPoolData
 import source.data.FMIData as FMIData
+import source.data_handling.OffTimeData as OffTimeData
 
 # MAIN
 if __name__ == '__main__':
@@ -30,7 +31,7 @@ if __name__ == '__main__':
     # Declaring variables
     data = {}
 
-    # RETRIEVING DATA FROM APIs:
+    # RETRIEVING DATA:
     # Electricity prices from NordPool
     #data = NordPoolData.getNordPoolPrices(data)    # get electricity price data
     data = DummyData.createDummyPriceData(data)     # for creating dummy data for testing purposes
@@ -43,8 +44,8 @@ if __name__ == '__main__':
 
     # HANDLING DATA
     # Optimize off-hours
-    #offTime = MinMaxOptimazation.offTime()
-    #offTime = OffTimeData.offTime(data)
+    #offTime = MinMaxOptimazation.offTime()     # WIP
+    offTime = OffTimeData.offTime(data)
     #offHours = OffTimeData.decideOffHours(data, offTime)
 
     # Plotting data for data visualization
