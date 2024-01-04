@@ -8,22 +8,33 @@ The purpose of this project is to optimize house heating with relay.
 # Project Inialization (not tested)
 
 ## Make sure you have Python and pip installed
-`python3.12 --version`
+`python3 --version`
 `pip --version`
 
 ## Clone repository
 
-`git clone`
+`git clone https://github.com/mrMikoma/SmartRelay.git`
 
-## Setup virtual environment
+## Setup and activate virtual environment
 
-`python3.12 -m venv venv`
+`python3 -m venv venv`
+`source venv/bin/activate`
 
 ## Install required modules
 
 `pip install -r requirements.txt`
 
-## If successful, activete venv and run
+## Create .env file in following format
 
-`source venv/bin/activate`
-`python3.12 ./main.py`
+```
+CITY=<city>
+COORDINATES=<latitude>,<longitude>
+```
+
+## If successful, run program
+
+`python3 ./main.py`
+
+## Deactivate venv
+
+`deactivate`

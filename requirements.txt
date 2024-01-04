@@ -1,8 +1,9 @@
+pip==23.3.2
 fmiopendata==0.4.3
-matplotlib==3.4.3
 nordpool==0.3.3
 python-dotenv==1.0.0
+datetime2==0.9.4
 Requests==2.31.0
 ShellyPy==0.3.0
-scipy==1.7.3
-numpy==1.21.2
+matplotlib==3.8.2
+numpy==1.26.3

@@ -1,7 +1,7 @@
 
 import math
 from random import gauss
-import DateTime
+from . import DateTime
 
 
 def createDummyPriceData(data):

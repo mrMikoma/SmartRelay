@@ -1,7 +1,7 @@
 
 import os
 from dotenv import load_dotenv
-import DateTime
+from . import DateTime
 from fmiopendata.wfs import download_stored_query
 
 
@@ -10,7 +10,7 @@ def getFMIforecast(data):
 
     # Declaring variables
     load_dotenv()
-    print(min(data.keys()))       # debug
+    print("Time period: {} to {}".format(max(data.keys()), max(data.keys())))      # debug
     model_data = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
                                        args=["starttime=" + min(data.keys()),
                                              "endtime=" + max(data.keys()),

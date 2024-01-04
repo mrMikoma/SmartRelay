@@ -2,7 +2,7 @@
 from random import gauss
 from nordpool import elspot
 import math
-import DateTime
+from . import DateTime
 
 
 def getNordPoolPrices(data):

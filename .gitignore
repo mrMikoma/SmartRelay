@@ -1,5 +1,6 @@
 /venv
 .env
+/source/__pycache__
 /source/data/__pycache__
 /source/data_handling/__pycache__
 /.idea/

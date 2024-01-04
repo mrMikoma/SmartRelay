@@ -1,4 +1,4 @@
-import DateTime
+from ..data import DateTime
 
 def getTimesInList(data):
     dates = data.keys()
@@ -14,6 +14,7 @@ def getValuesInList(data, key):
     return data_list
 
 def printData(data):
+    print("")
     for i in data:
         print("Key : {} , Value : {}".format(i, data[i]))
     print("", end='\n')
