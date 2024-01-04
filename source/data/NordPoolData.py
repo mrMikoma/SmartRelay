@@ -64,7 +64,7 @@ def getNordPoolPrices(data):
             data[DateTime.dateDateString(price["start"])] = {'Price': float("{:.2f}".format(random_number))}
 
 
-    print(f"Data retrieval completed.\n")
+    print(f"\n\nData retrieval completed.\n")
     return data
 
 # eof

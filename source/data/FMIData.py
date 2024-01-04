@@ -17,7 +17,7 @@ def getFMIforecast(data):
 
     # Declaring variables
     load_dotenv()
-    print("Time period: {} to {}".format(max(data.keys()), max(data.keys())))
+    print("Time period: {} to {}".format(min(data.keys()), max(data.keys())))
     model_data = download_stored_query("fmi::forecast::harmonie::surface::point::multipointcoverage",
                                        args=["starttime=" + min(data.keys()),
                                              "endtime=" + max(data.keys()),
