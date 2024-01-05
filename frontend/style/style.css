@@ -1,0 +1,23 @@
+* {
+  font-family: "Press Start 2P", "Roboto", sans-serif !important;
+}
+
+body {
+  background-color: #efffec;
+}
+
+#chart {
+  font-family: sans-serif !important;
+}
+
+.status-on {
+  background-color: #aeeea0;
+}
+
+.status-off {
+  background-color: #f6beb2;
+}
+
+@media screen and (max-width:screen-xs-max){
+  .main-body{padding:0px;}
+}

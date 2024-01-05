@@ -1,7 +1,10 @@
-/venv
+# main directory
+/.env
 .env
-/source/__pycache__
-/source/data/__pycache__
-/source/data_handling/__pycache__
-/.idea/
+
+# frontend directory
+
+# backend directory
+__pycache__/
+/backend/venv
 
