@@ -1,10 +1,16 @@
-# main directory
+# root
 /.env
 .env
 
-# frontend directory
-
-# backend directory
+# backend
 __pycache__/
 /backend/venv
 
+# frontend
+/frontend/node_modules
+
+# graphana
+/graphana/data
+
+# influxdb
+/influxdb/data
