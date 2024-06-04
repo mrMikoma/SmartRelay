@@ -6,6 +6,7 @@ services:
     build:
       context: ./influxdb
       dockerfile: Dockerfile
+    restart: "on-failure" 
     ports:
       - "8086:8086"
     env_file:
@@ -15,6 +16,7 @@ services:
     build:
       context: ./services/spot
       dockerfile: Dockerfile
+    restart: "on-failure" 
     env_file:
       - .env
     depends_on:
