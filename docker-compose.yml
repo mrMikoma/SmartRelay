@@ -1,26 +1,23 @@
 version: '3.8'
 
 services:
-  db:
-    image: influxdb
-    build:
-      context: ./influxdb
-      dockerfile: Dockerfile
+  influxdb:
+    image: influxdb:2
     restart: "on-failure" 
+    volumes:
+      - "$PWD/influxdb/data:/var/lib/influxdb2"
+      - "$PWD/influxdb/config:/etc/influxdb2"
     ports:
       - "8086:8086"
     env_file:
       - .env
-  spot:
-    image: spot
+  nordpool:
+    image: nordpool
     build:
-      context: ./services/spot
+      context: ./services/nordpool
       dockerfile: Dockerfile
     restart: "on-failure" 
     env_file:
       - .env
     depends_on:
-      - db
-
-
-    
+      - influxdb

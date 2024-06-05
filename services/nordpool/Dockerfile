@@ -1,27 +1,19 @@
 FROM node:18-alpine
 
-# 1. Install necessary tools
 RUN apk add --no-cache bash
 
-# 2. Set up working directory
 WORKDIR /
 
-# 3. Copy project files (efficient caching)
 COPY package*.json ./
 RUN npm ci --only=production  # Use ci for more reliable builds
 
-# 4. Copy remaining source code
 COPY . .
 
-# 5. Define cron job schedule
-RUN echo "* * * * * node /scripts/fetch-prices-json.js" > /etc/crontabs/root
+RUN echo "* * * * * node /scripts/fetch-prices-to-influxdb.js" > /etc/crontabs/root
 
-# | node /scripts/update-influxdb.js"
-
-# 6. Ensure cron is running in the foreground
 CMD ["crond", "-f"]
 
-
+# AREA=FI CURRENCY=EUR node scripts/fetch-prices-json.js | INFLUX_HOST=localhost INFLUX_DATABASE=nordpool INFLUX_USERNAME=nordpool INFLUX_PASSWORD=nordpool node scripts/update-influxdb.js
 
 # ## WITH ROOT USER
 

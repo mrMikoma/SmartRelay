@@ -1,0 +1,15 @@
+apiVersion: 1
+datasources:
+  - name: homemon
+    type: influxdb
+    typeName: InfluxDB
+    typeLogoUrl: public/app/plugins/datasource/influxdb/img/influxdb_logo.svg
+    access: proxy
+    url: http://influxdb:8086
+    user: $INFLUXDB_USERNAME
+    password: $INFLUXDB_PASSWORD
+    user: grafana
+    database: homemon
+    basicAuth: false
+    isDefault: true
+    readOnly: true
