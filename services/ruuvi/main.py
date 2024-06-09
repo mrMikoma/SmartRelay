@@ -18,8 +18,6 @@ org = os.getenv("DOCKER_INFLUXDB_INIT_ORG")
 bucket = os.getenv("DOCKER_INFLUXDB_INIT_BUCKET")
 token = os.getenv("INFLUX_TOKEN")
 
-# os.environ["RUUVI_BLE_ADAPTER"] = "bleak"
-
 async def run_scan_async():
     async with InfluxDBClientAsync(url="http://" + host + ":8086", token=token, org=org) as client:
         try:

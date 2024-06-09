@@ -34,4 +34,13 @@ services:
       - /run/dbus:/run/dbus
     depends_on:
       - influxdb
-
+  fmi:
+    image: fmi
+    build:
+      context: ./services/fmi
+      dockerfile: Dockerfile
+    restart: "on-failure"
+    env_file:
+      - .env
+    depends_on:
+      - influxdb
