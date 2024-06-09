@@ -38,7 +38,17 @@ writeClient.useDefaultTags({ host: process.env.HOSTNAME || "unknown" });
 
 // Fetch Nordpool prices and write them to InfluxDB
 (async () => {
+  const timestamp = new Date().toISOString(); // Get timestamp at the start
+
   try {
+    console.log(
+      timestamp,
+      "Fetching hourly prices for",
+      process.env.AREA,
+      "in",
+      process.env.CURRENCY
+    );
+
     // Fetch the hourly prices for AREA and CURRENCY
     const prices = new nordpool.Prices();
     const pricesJSON = await prices.hourly({
@@ -49,7 +59,7 @@ writeClient.useDefaultTags({ host: process.env.HOSTNAME || "unknown" });
 
     // Convert the prices to InfluxDB points
     const points = pricesJSON.map((priceData) => {
-      const point = new Point("nordpool_prices")
+      const point = new Point("nordpool")
         .tag("area", priceData.area)
         .floatField("value", priceData.value)
         .timestamp(new Date(priceData.date));
@@ -61,9 +71,9 @@ writeClient.useDefaultTags({ host: process.env.HOSTNAME || "unknown" });
     writeClient.writePoints(points);
 
     await writeClient.flush();
-    console.log("Data written to InfluxDB successfully");
+    console.log(timestamp, "Data written to InfluxDB successfully");
   } catch (error) {
-    console.error("Error fetching/writing Nordpool prices:", error);
+    console.error(timestamp, "Error fetching/writing Nordpool prices:", error);
   } finally {
     // Ensure the writeApi is closed
     writeClient.close();
