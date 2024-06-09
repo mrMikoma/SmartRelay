@@ -61,7 +61,7 @@ writeClient.useDefaultTags({ host: process.env.HOSTNAME || "unknown" });
     const points = pricesJSON.map((priceData) => {
       const point = new Point("nordpool")
         .tag("area", priceData.area)
-        .floatField("value", priceData.value)
+        .floatField("price", priceData.value)
         .timestamp(new Date(priceData.date));
 
       return point;

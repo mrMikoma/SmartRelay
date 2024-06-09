@@ -1,38 +1,51 @@
-"""
-from ruuvitag-sensor example: https://github.com/ttu/ruuvitag-sensor/blob/master/examples/post_to_influxdb.py
-"""
+### References:
+#   - ruuvitag-sensor example: https://github.com/ttu/ruuvitag-sensor/blob/master/examples/post_to_influxdb.py
+#   - ruuvitag-sensor module documentation: https://pypi.org/project/ruuvitag-sensor/
+#   - InfluxDB Python client: https://pypi.org/project/influxdb-client/
 
-from influxdb import InfluxDBClient
+import os
+import asyncio
+from dotenv import load_dotenv
+from datetime import datetime
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
+from influxdb_client import Point
+from influxdb_client.client.influxdb_client_async import InfluxDBClientAsync
 
-client = InfluxDBClient(host="localhost", port=8086, database="ruuvi")
+load_dotenv()
+macs = os.getenv("RUUVI_MACS").split(",")
+host = os.getenv("INFLUX_HOST")
+org = os.getenv("DOCKER_INFLUXDB_INIT_ORG")
+bucket = os.getenv("DOCKER_INFLUXDB_INIT_BUCKET")
+token = os.getenv("INFLUX_TOKEN")
 
+# os.environ["RUUVI_BLE_ADAPTER"] = "bleak"
 
-def write_to_influxdb(received_data):
-    mac = received_data[0]
-    payload = received_data[1]
+async def run_scan_async():
+    async with InfluxDBClientAsync(url="http://" + host + ":8086", token=token, org=org) as client:
+        try:
+            async for data in RuuviTagSensor.get_data_async(macs):
+                write_api = client.write_api()
+                
+                # print(data) # Debug
+                
+                point = Point("ruuvi") \
+                        .tag("location", data[0]) \
+                        .field("temperature", data[1]["temperature"]) \
+                        .field("humidity", data[1]["humidity"])
 
-    # dataFormat = payload["data_format"] if ("data_format" in payload) else None
-    # fields = {}
-    # fields["temperature"] = payload["temperature"] if ("temperature" in payload) else None
-    # fields["humidity"] = payload["humidity"] if ("humidity" in payload) else None
-    # fields["pressure"] = payload["pressure"] if ("pressure" in payload) else None
-    # fields["accelerationX"] = payload["acceleration_x"] if ("acceleration_x" in payload) else None
-    # fields["accelerationY"] = payload["acceleration_y"] if ("acceleration_y" in payload) else None
-    # fields["accelerationZ"] = payload["acceleration_z"] if ("acceleration_z" in payload) else None
-    # fields["batteryVoltage"] = payload["battery"] / 1000.0 if ("battery" in payload) else None
-    # fields["txPower"] = payload["tx_power"] if ("tx_power" in payload) else None
-    # fields["movementCounter"] = payload["movement_counter"] if ("movement_counter" in payload) else None
-    # fields["measurementSequenceNumber"] = (
-    #     payload["measurement_sequence_number"] if ("measurement_sequence_number" in payload) else None
-    # )
-    # fields["tagID"] = payload["tagID"] if ("tagID" in payload) else None
-    # fields["rssi"] = payload["rssi"] if ("rssi" in payload) else None
-    # json_body = [
-    #     {"measurement": "ruuvi_measurements", "tags": {"mac": mac, "dataFormat": dataFormat}, "fields": fields}
-    # ]
-    # client.write_points(json_body)
+                successfully = await write_api.write(bucket=bucket, record=[point])
 
+                print(f"Write to InfluxDB: {successfully} for {data[0]} at " + 
+                      datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f'))
+        except Exception as e:
+            print(f"Error scanning for RuuviTag data: {e}")
+            import traceback
+            traceback.print_exc()
+        finally:
+            print("Scanning finished or encountered an error.")  
 
 if __name__ == "__main__":
-    RuuviTagSensor.get_data(write_to_influxdb)
+    print("Starting RuuviTag listener")
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run_scan_async())
+    print("Stopped RuuviTag listener")

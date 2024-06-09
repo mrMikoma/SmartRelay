@@ -1,3 +1,6 @@
-influxdb==5.3.2
+influxdb-client[async]==1.43.0
+influxdb-client==1.43.0
 ruuvitag-sensor==2.3.1
+bleak==0.22.2
 asyncio==3.4.3
+python-dotenv==1.0.1

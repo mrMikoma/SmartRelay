@@ -21,3 +21,17 @@ services:
       - .env
     depends_on:
       - influxdb
+  ruuvi:
+    image: ruuvi
+    privileged: true
+    build:
+      context: ./services/ruuvi
+      dockerfile: Dockerfile
+    restart: "on-failure"
+    env_file:
+      - .env
+    volumes:
+      - /run/dbus:/run/dbus
+    depends_on:
+      - influxdb
+
