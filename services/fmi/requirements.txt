@@ -1,3 +1,5 @@
 fmiopendata==0.4.3
 asyncio==3.4.3
 python-dotenv==1.0.1
+influxdb-client[async]==1.43.0
+influxdb-client==1.43.0
