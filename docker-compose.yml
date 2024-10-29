@@ -1,9 +1,9 @@
-version: '3.8'
+version: "3.8"
 
 services:
   influxdb:
     image: influxdb:2
-    restart: "on-failure" 
+    restart: "on-failure"
     volumes:
       - "$PWD/influxdb/data:/var/lib/influxdb2"
       - "$PWD/influxdb/config:/etc/influxdb2"
@@ -11,29 +11,29 @@ services:
       - "8086:8086"
     env_file:
       - .env
-  nordpool:
-    image: nordpool
-    build:
-      context: ./services/nordpool
-      dockerfile: Dockerfile
-    restart: "on-failure" 
-    env_file:
-      - .env
-    depends_on:
-      - influxdb
-  ruuvi:
-    image: ruuvi
-    privileged: true
-    build:
-      context: ./services/ruuvi
-      dockerfile: Dockerfile
-    restart: "on-failure"
-    env_file:
-      - .env
-    volumes:
-      - /run/dbus:/run/dbus
-    depends_on:
-      - influxdb
+#  nordpool:
+#    image: nordpool
+#    build:
+#      context: ./services/nordpool
+#      dockerfile: Dockerfile
+#    restart: "on-failure"
+#    env_file:
+#      - .env
+#    depends_on:
+#      - influxdb
+#  ruuvi:
+#    image: ruuvi
+#    privileged: true
+#    build:
+#      context: ./services/ruuvi
+#      dockerfile: Dockerfile
+#    restart: "on-failure"
+#    env_file:
+#      - .env
+#    volumes:
+#      - /run/dbus:/run/dbus
+#    depends_on:
+#      - influxdb
   fmi:
     image: fmi
     build:
